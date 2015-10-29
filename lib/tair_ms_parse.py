@@ -73,7 +73,7 @@ def getAllGIs(dataList, TAIRmap):
     return TAIRsDict
 
 #-------------------------------------------------------------------------------
-def compareTAIRs(dataList, TAIRmap, background=False):
+def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     """
     From a dict of MS_files:TAIRS_set, write a res_output.csv file with
     a comparison of the TAIRS content.  Return a set of TAIRs which
@@ -81,10 +81,11 @@ def compareTAIRs(dataList, TAIRmap, background=False):
     background present)
     """
 
+    outputF = os.path.join(outfolder, "res_output.csv")
     data_d = getAllGIs(dataList, TAIRmap)
-
     comparisons = itertools.combinations(data_d.keys(), 2)
-    with open("res_output.csv", "w") as f:
+    
+    with open(outputF, "w") as f:
         for i, j in comparisons:
             print "\nComparing %s and %s..." % (i,j)
             commons = data_d[i] & data_d[j] 
@@ -122,22 +123,3 @@ def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
                     if TAIRmap[gi] in common_to_all:
                         row.append(TAIRmap[gi])
                         writer.writerow(row)
-    
-#-------------------------------------------------------------------------------
-def printAll(common_to_all, fileList, TAIRmap, background=False):
-    """
-    Print the original MS data for TAIRs common to all data files and
-    removing background (if any).
-    """
-
-    for dataFile in fileList:
-        bname = os.path.splitext(dataFile)[0]
-        bname = os.path.basename(bname)
-        
-        csvOut = bname + "_with_background.csv"
-        printOriginalData( common_to_all[0], dataFile, TAIRmap, csvOut )
-
-        if background:
-            csvOut = bname + "_background_removed.csv"
-            printOriginalData( common_to_all[1], dataFile, TAIRmap, csvOut )
-            
