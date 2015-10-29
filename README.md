@@ -3,7 +3,7 @@ A python library to parse Mass Spectrometry results and annotate with TAIR acces
 ## Requirements
 - Python2
 - BioPython library
-TODO
+- TODO
 ## Installation
 TODO
 ## Usage
