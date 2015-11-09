@@ -34,7 +34,11 @@ if __name__ == '__main__':
     DATA = args.inputs
     OUTFOLDER = args.outfolder
 
-    print "Results will be in %s" % OUTFOLDER
+    if os.path.isdir(OUTFOLDER):
+        print "The results will be in the already existent folder: %s" % OUTFOLDER
+    else:
+        print "Creating the folder %s\n The results will be there." % OUTFOLDER
+        os.makedirs(OUTFOLDER)
     
     for inFile in DATA:
         if not os.path.isfile(inFile):
