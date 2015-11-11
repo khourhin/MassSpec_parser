@@ -17,7 +17,7 @@ def checkForOutFolder(outfolder):
 def checkInputExist(data):
     for inFile in data:
         if not os.path.isfile(inFile):
-            raise IOError("Are you sure that the file %s exists ?") % inFile 
+            raise IOError("Are you sure that the file %s exists ?" % inFile )
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
