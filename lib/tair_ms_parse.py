@@ -104,6 +104,45 @@ def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     return [ common_to_all ] 
 
 #-------------------------------------------------------------------------------
+def print_original_Data(dataList, TAIRmap, background=False):
+    """
+    A modified version of printOriginalData which print columns for
+    each input files and put 1 if the TAIR (gi) is present in the
+    corresponding file or 0 if not
+    """
+    
+    if background:
+        data_d = getAllGIs(dataList + background, TAIRmap)
+    else:
+        data_d = getAllGIs(dataList, TAIRmap)
+        
+    infiles = sorted(data_d.keys())
+    
+    for dataFile in dataList:
+        csvOut = dataFile + "modif.csv"
+        with open(dataFile, "r") as f:
+            reader = csv.reader(f, delimiter=",", quotechar='"')
+            
+            with open(csvOut, "wb") as fout:
+                writer = csv.writer(fout, delimiter=",", quotechar='"')
+                header = next(reader) + ["TAIR"] + infiles
+                writer.writerow(header)
+
+                for row in reader:
+                    gi = row[2].replace('gi|','')
+                    if gi in TAIRmap:
+                        TAIR = (TAIRmap[gi])
+                        row.append(TAIR)
+
+                        for infile in infiles:
+                            row.append("1") if TAIR in data_d[infile] else row.append("0")
+
+                    else:
+                        row.append("NO MAPPING TO TAIR")
+                        
+                    writer.writerow(row)
+
+#-------------------------------------------------------------------------------
 def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
     """
     Print the original data of a MS file, filtering out the TAIRs not
@@ -115,8 +154,8 @@ def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
         next(reader)
 
         with open(csvOut, "wb") as fout:
-            writer = csv.writer(fout, delimiter=",", quotechar='"')
         
+            writer = csv.writer(fout, delimiter=",", quotechar='"')
             for row in reader:
                 gi = row[2].replace('gi|','')
                 if gi in TAIRmap:

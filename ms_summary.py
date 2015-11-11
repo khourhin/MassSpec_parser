@@ -76,3 +76,6 @@ if __name__ == '__main__':
         if BACKGROUND:
             csvOut = outPathFor(csvF) + "_background_removed.csv"
             ms.printOriginalData( common_to_all[1], csvF, TAIRmap, csvOut )
+
+    ms.print_original_Data(DATA, TAIRmap, background=BACKGROUND)
+    
