@@ -5,6 +5,21 @@ from lib import tair_ms_parse as ms
 import os
 import argparse
 
+#-------------------------------------------------------------------------------
+def checkForOutFolder(outfolder):
+    if os.path.isdir(outfolder):
+        print "The results will be in the already existent folder: %s" % outfolder
+    else:
+        print "Creating the folder %s\n The results will be there." % outfolder
+        os.makedirs(outfolder)
+
+#-------------------------------------------------------------------------------
+def checkInputExist(data):
+    for inFile in data:
+        if not os.path.isfile(inFile):
+            raise IOError("Are you sure that the file %s exists ?") % inFile 
+
+#-------------------------------------------------------------------------------
 if __name__ == '__main__':
     """
     From a csv with a list of gis, get a multifasta with the
@@ -13,7 +28,7 @@ if __name__ == '__main__':
     - col number where to find the GIs in the csv
     """
 
-    ################################################################################
+#-------------------------------------------------------------------------------
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
     parser.add_argument("-i","--inputs",nargs="*", help="CSV files of MS results. At least 2 should be given.", required=True )
     parser.add_argument("-b", "--background", nargs="*", help="CSV files for the background.") 
@@ -22,7 +37,7 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--cpus", help="Number of cpus to use for blast")
     parser.add_argument("-o", "--outfolder", help="Folder where the output will be regenerated. Will be created if doesn't exist", default="MS_parse_out")
     args = parser.parse_args()
-    ################################################################################
+#-------------------------------------------------------------------------------
     
     if len(args.inputs) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
@@ -33,17 +48,9 @@ if __name__ == '__main__':
     BACKGROUND = args.background
     DATA = args.inputs
     OUTFOLDER = args.outfolder
-
-    if os.path.isdir(OUTFOLDER):
-        print "The results will be in the already existent folder: %s" % OUTFOLDER
-    else:
-        print "Creating the folder %s\n The results will be there." % OUTFOLDER
-        os.makedirs(OUTFOLDER)
     
-    for inFile in DATA:
-        if not os.path.isfile(inFile):
-            raise IOError("Are you sure that the file %s exists ?") % inFile 
-
+    checkForOutFolder(OUTFOLDER)
+    checkInputExist(DATA)
     gg.format_db(DB, "prot")
 
     blast_outs = []
