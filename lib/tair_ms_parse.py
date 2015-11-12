@@ -129,7 +129,7 @@ def print_original_Data(dataList, TAIRmap, col_num, background=False):
                 writer.writerow(header)
 
                 for row in reader:
-                    gi = row[2].replace('gi|','')
+                    gi = row[col_num].replace('gi|','')
                     if gi in TAIRmap:
                         TAIR = (TAIRmap[gi])
                         row.append(TAIR)
