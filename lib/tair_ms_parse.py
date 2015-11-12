@@ -104,7 +104,7 @@ def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     return [ common_to_all ] 
 
 #-------------------------------------------------------------------------------
-def print_original_Data(dataList, TAIRmap, background=False):
+def print_original_Data(dataList, TAIRmap, col_num, background=False):
     """
     A modified version of printOriginalData which print columns for
     each input files and put 1 if the TAIR (gi) is present in the
@@ -147,6 +147,8 @@ def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
     """
     Print the original data of a MS file, filtering out the TAIRs not
     in common_to_all.
+
+    to be obsolete ?
     """
 
     with open(dataFile, "r") as f:
