@@ -104,7 +104,7 @@ def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     return [ common_to_all ] 
 
 #-------------------------------------------------------------------------------
-def print_original_Data(dataList, TAIRmap, background=False):
+def print_original_Data(dataList, TAIRmap, col_num, outfolder, background=False):
     """
     A modified version of printOriginalData which print columns for
     each input files and put 1 if the TAIR (gi) is present in the
@@ -119,7 +119,9 @@ def print_original_Data(dataList, TAIRmap, background=False):
     infiles = sorted(data_d.keys())
     
     for dataFile in dataList:
-        csvOut = dataFile + "modif.csv"
+        csvOut = os.path.basename( os.path.splitext(dataFile)[0] )
+        csvOut = os.path.join( outfolder, csvOut + "_out.csv" )
+        
         with open(dataFile, "r") as f:
             reader = csv.reader(f, delimiter=",", quotechar='"')
             
@@ -129,7 +131,7 @@ def print_original_Data(dataList, TAIRmap, background=False):
                 writer.writerow(header)
 
                 for row in reader:
-                    gi = row[2].replace('gi|','')
+                    gi = row[col_num].replace('gi|','')
                     if gi in TAIRmap:
                         TAIR = (TAIRmap[gi])
                         row.append(TAIR)
@@ -147,6 +149,8 @@ def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
     """
     Print the original data of a MS file, filtering out the TAIRs not
     in common_to_all.
+
+    to be obsolete ?
     """
 
     with open(dataFile, "r") as f:

@@ -29,6 +29,10 @@ def getFastaFromGIs(gis_list, fout_name):
     From a list of GIs (as string) get a multifasta with name fout_name + ".fas"
     """
 
+    if os.path.isfile(fout_name):
+        print "Fasta file %s already existing, using it for next steps ..." % fout_name
+        return False
+    
     # Get data from NCBI
     handle = Entrez.efetch(db='protein', id=gis_list,
                            rettype='fasta', retmode='text')
