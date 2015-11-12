@@ -21,21 +21,28 @@ def checkInputExist(data):
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
-    """
-    From a csv with a list of gis, get a multifasta with the
-    corresponding sequences.
-    Params: 
-    - col number where to find the GIs in the csv
-    """
 
-#-------------------------------------------------------------------------------
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
-    parser.add_argument("-i","--inputs",nargs="*", help="CSV files of MS results. At least 2 should be given.", required=True )
-    parser.add_argument("-b", "--background", nargs="*", help="CSV files for the background.") 
-    parser.add_argument("-d", "--dbBlast", help="""A database in fasta format 
-    to blast against and then create the mapping""", required=True)
-    parser.add_argument("-c", "--cpus", help="Number of cpus to use for blast")
-    parser.add_argument("-o", "--outfolder", help="Folder where the output will be regenerated. Will be created if doesn't exist", default="MS_parse_out")
+    parser.add_argument("-i","--inputs",nargs="*",
+                        help="CSV files of MS results. At least 2 should be given.",
+                        required=True )
+    
+    parser.add_argument("-b", "--background", nargs="*",
+                        help="CSV files for the background.")
+    
+    parser.add_argument("-d", "--dbBlast",
+                        help="""A database in fasta format
+                        to blast against and then create the mapping""",
+                        required=True)
+    
+    parser.add_argument("-c", "--cpus",
+                        help="Number of cpus to use for blast")
+    
+    parser.add_argument("-o", "--outfolder",
+                        help="""Folder where the output will be regenerated.
+                        Will be created if doesn't exist""",
+                        default="MS_parse_out")
+    
     args = parser.parse_args()
 #-------------------------------------------------------------------------------
     
