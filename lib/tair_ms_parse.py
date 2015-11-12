@@ -104,7 +104,7 @@ def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     return [ common_to_all ] 
 
 #-------------------------------------------------------------------------------
-def print_original_Data(dataList, TAIRmap, col_num, background=False):
+def print_original_Data(dataList, TAIRmap, col_num, outfolder, background=False):
     """
     A modified version of printOriginalData which print columns for
     each input files and put 1 if the TAIR (gi) is present in the
@@ -119,7 +119,9 @@ def print_original_Data(dataList, TAIRmap, col_num, background=False):
     infiles = sorted(data_d.keys())
     
     for dataFile in dataList:
-        csvOut = dataFile + "modif.csv"
+        csvOut = os.path.basename( os.path.splitext(dataFile)[0] )
+        csvOut = os.path.join( outfolder, csvOut + "_out.csv" )
+        
         with open(dataFile, "r") as f:
             reader = csv.reader(f, delimiter=",", quotechar='"')
             

@@ -69,9 +69,9 @@ if __name__ == '__main__':
     TAIRmap =  ms.getMap(blast_outs)
     common_to_all = ms.compareTAIRs( DATA, TAIRmap, OUTFOLDER, background=BACKGROUND )
 
-    ms.print_original_Data(DATA, TAIRmap, COL_NUM, background=BACKGROUND)
+    ms.print_original_Data(DATA, TAIRmap, COL_NUM, OUTFOLDER, background=BACKGROUND)
 
-    # Old output version 
+    # Old output version (obsolete soon?)
     for csvF in DATA:
         csvOut = outPathFor(csvF) + "_with_background.csv"
         ms.printOriginalData( common_to_all[0], csvF, TAIRmap, csvOut )
