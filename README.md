@@ -28,8 +28,11 @@ pip install biopython
 
 #### Verify that everything is all set:
 \# In the command line:
+
 python
+
 \# In the interpreter
+
 import numpy
 import Bio
 
