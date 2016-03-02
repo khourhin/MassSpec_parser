@@ -34,6 +34,7 @@ python
 \# In the interpreter
 
 import numpy
+
 import Bio
 
 ## Usage
