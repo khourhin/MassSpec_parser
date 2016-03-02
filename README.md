@@ -14,31 +14,44 @@ https://www.python.org/downloads/
 If you are using Windows, you might have to add the path to Python
 into your path variable.
 
-#### Install Microsoft Visual C++ compiler for Python 2.7:
+#### (FOR WINDOWS) Install Microsoft Visual C++ compiler for Python 2.7:
 https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
 #### Install Pip (for easyer python module installation):
 https://pip.pypa.io/en/stable/installing/
 
 #### Install numpy module:
-pip install numpy
+`pip install numpy`
 
 #### Install biopython module:
-pip install biopython
+`pip install biopython`
 
 #### Verify that everything is all set:
 \# In the command line:
 
-python
+`python`
 
-\# In the interpreter
+\# In the python interpreter
 
-import numpy
+`import numpy`
 
-import Bio
+`import Bio`
 
 ## Usage
-TODO
+python ms_summary.py [-h] -i [INPUTS [INPUTS ...]] [-b [BACKGROUND [BACKGROUND ...]]] -d DBBLAST [-c CPUS] [-o OUTFOLDER]                                                                          
+Arguments:
+
+-h, --help: show this help message and exit
+
+-i [INPUTS [INPUTS ...]], --inputs [INPUTS [INPUTS ...]]: CSV files of MS results. At least 2 should be given.
+
+-b [BACKGROUND [BACKGROUND ...]], --background [BACKGROUND [BACKGROUND ...]]: CSV files for the background.
+
+-d DBBLAST, --dbBlast DBBLAST: A database in fasta format to blast against and then create the mapping
+
+-c CPUS, --cpus CPUS  Number of cpus to use for blast
+
+-o OUTFOLDER, --outfolder OUTFOLDER: Folder where the output will be regenerated. Will be created if doesn't exist.
 
 ## Contributing
 1. Fork it!
