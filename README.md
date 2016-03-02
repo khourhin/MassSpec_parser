@@ -5,7 +5,6 @@ A python library to parse Mass Spectrometry results and annotate with TAIR acces
 - Python2.7
 - Numpy
 - Biopython
-- More to add ?
 
 ## Installation
 If you don't have yet the requirements installed:
@@ -33,16 +32,6 @@ python
 \# In the interpreter
 import numpy
 import Bio
-
-### Python2.7
-https://www.python.org/downloads/
-https://docs.python.org/2/install/
-
-### Numpy
-http://www.numpy.org/
-
-### Biopython
-http://biopython.org/wiki/Main_Page
 
 ## Usage
 TODO
