@@ -4,7 +4,6 @@ import os
 import csv
 import subprocess
 
-PATH_BLAST = '/home/tiennou/Documents/Taff/softwares/RNA-seq/blast+/bin/'
 Entrez.email = 'ekornobis@gmail.com'
 
 #-------------------------------------------------------------------------------

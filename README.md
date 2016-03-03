@@ -2,19 +2,19 @@
 A python library to parse Mass Spectrometry results and annotate with TAIR accessions
 
 ## Requirements
-- Python2.7
+- Python3
 - Numpy
 - Biopython
 
 ## Installation
 If you don't have yet the requirements installed:
-#### Install Python 2.7:
+#### Install Python3:
 https://www.python.org/downloads/
 
 If you are using Windows, you might have to add the path to Python
 into your path variable.
 
-#### (FOR WINDOWS) Install Microsoft Visual C++ compiler for Python 2.7:
+#### (FOR WINDOWS) Install Microsoft Visual C++ compiler for Python3:
 https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
 #### Install Pip (for easyer python module installation):

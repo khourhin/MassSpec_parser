@@ -67,14 +67,14 @@ if __name__ == '__main__':
 
     checkDependencies()
 
-    if len(args.inputs) < 2:
+    if len(args.input) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
 
 # Column where to find the gis in the csv (index starting at 0)
     COL_NUM = 2
     DB = args.dbBlast
     BACKGROUND = args.background
-    DATA = args.inputs
+    DATA = args.input
     OUTFOLDER = args.outfolder
     CPUS = args.cpus
     PATH_BLAST = args.pathBlast
