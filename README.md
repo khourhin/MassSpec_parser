@@ -40,21 +40,34 @@ https://pip.pypa.io/en/stable/installing/
 ## Usage
 python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -i INPUTS, --inputs INPUTS
-                        CSV files of MS results. At least 2 should be given.
-  -d DBBLAST, --dbBlast DBBLAST
-                        A database in fasta format to blast against and then create the mapping.
-  -b BACKGROUND, --background BACKGROUND
-                        CSV files for the background.
-  -c CPUS, --cpus CPUS  Number of cpus to use for blast.
-  -o OUTFOLDER, --outfolder OUTFOLDER
-                        Folder where the output will be regenerated. Will be created if doesn't exist.
-  -p PATHBLAST, --pathBlast PATHBLAST
-                        Folder where the blast+ executables are located, if not specified, will look in the
-                        environment PATH                                                                     
+Arguments:
 
+  * -h, --help
+
+  show this help message and exit
+
+  * -i INPUT, --inputs INPUT
+
+  CSV file of MS results. At least 2 should be given.
+
+  * -d DBBLAST, --dbBlast DBBLAST
+
+  A database in fasta format to blast against and then create the mapping.
+
+  * -b BACKGROUND, --background BACKGROUND
+
+  CSV file for the background (more than one can be given).
+
+  * -c CPUS, --cpus CPUS
+
+  Number of cpus to use for blast.
+  * -o OUTFOLDER, --outfolder OUTFOLDER
+
+  Folder where the output will be regenerated. Will be created if doesn't exist.
+
+  * -p PATHBLAST, --pathBlast PATHBLAST
+
+  Folder where the blast+ executables are located, if not specified, will look in the environment PATH.                                                                     
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

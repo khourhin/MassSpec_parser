@@ -36,7 +36,7 @@ def checkDependencies():
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
-    parser.add_argument("-i", "--inputs", action='append',
+    parser.add_argument("-i", "--input", action='append',
                         help="CSV files of MS results. At least 2 should be given.",
                         required=True)
 
