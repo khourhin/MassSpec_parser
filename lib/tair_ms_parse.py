@@ -28,7 +28,7 @@ def getMap( blastouts, isoform=True ):
                 else:
                     TAIRmap[gi] = tair
 
-    print "Total of TAIR/GI mapping: %s" % (len(TAIRmap))
+    print("Total of TAIR/GI mapping: %s" % (len(TAIRmap)))
     return TAIRmap
 
 #-------------------------------------------------------------------------------
@@ -53,9 +53,9 @@ def translateGIs(dataFile, TAIRmap):
             else:
                 missing_TAIR += 1
 
-    print "\nFile: %s" % (dataFile)
-    print "GIs missing TAIRs:%d" % (missing_TAIR,)
-    print "Total TAIRs: %s" % (len(TAIRset))
+    print("\nFile: %s" % (dataFile))
+    print("GIs missing TAIRs:%d" % (missing_TAIR,))
+    print("Total TAIRs: %s" % (len(TAIRset)))
     return TAIRset
 
 #-------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ def compareTAIRs(dataList, TAIRmap, outfolder, background=False):
     
     with open(outputF, "w") as f:
         for i, j in comparisons:
-            print "\nComparing %s and %s..." % (i,j)
+            print("\nComparing %s and %s..." % (i,j))
             commons = data_d[i] & data_d[j] 
             f.write( 'Common to:%s-%s\n' % (i,j) + '\n'.join(sorted(commons)) + '\n')
         common_to_all = set.intersection(*data_d.values())

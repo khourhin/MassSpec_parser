@@ -20,7 +20,7 @@ def getGIs(gis_csv, col_num):
         for row in csv.reader(f):
             gis.append(row[col_num])
 
-    print "Found %s GIs in csv %s" % (len(gis), gis_csv)
+    print("Found %s GIs in csv %s" % (len(gis), gis_csv))
     return gis
 
 #-------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ def getFastaFromGIs(gis_list, fout_name):
     """
 
     if os.path.isfile(fout_name):
-        print "Fasta file %s already existing, using it for next steps ..." % fout_name
+        print("Fasta file %s already existing, using it for next steps ..." % fout_name)
         return False
 
     # Get data from NCBI
@@ -45,7 +45,7 @@ def getFastaFromGIs(gis_list, fout_name):
             fout.write(str(record.seq) + "\n")
 
     handle.close()
-    print "Written %s sequences to %s" % (count, fout_name)
+    print("Written %s sequences to %s" % (count, fout_name))
 
 #-------------------------------------------------------------------------------
 def format_db(fasta, dbtype='prot', path_blast=''):
@@ -55,10 +55,10 @@ def format_db(fasta, dbtype='prot', path_blast=''):
     """
     if all( [ os.path.isfile(x)
               for x in [fasta + ".phr", fasta + ".pin", fasta + ".psq"] ] ):
-        print "Already formated database for %s" % fasta
+        print("Already formated database for %s" % fasta)
         return False
 
-    print "Formatting db for %s" % fasta
+    print("Formatting db for %s" % fasta)
     cmd = [path_blast + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
     proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()
@@ -71,14 +71,14 @@ def do_blastP(query, db, outfile, cpus, fmt=6, path_blast=''):
     Launched a blastp analysis for the [query] against the [db]
     """
     if os.path.isfile(outfile):
-        print "Seems like the blast results are already present: %s" % outfile
-        print "This file will be therefore used for further computations."
+        print("Seems like the blast results are already present: %s" % outfile)
+        print("This file will be therefore used for further computations.")
         return False
 
-    print "Starting BlastP"
+    print("Starting BlastP")
     cmd = [path_blast + 'blastp', '-query', query, '-db', db, '-out', outfile,
            '-outfmt', str(fmt), '-evalue', '1e-6', '-num_threads', str(cpus) ]
 
-    print " ".join(cmd)
+    print(" ".join(cmd))
     proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()

@@ -9,9 +9,9 @@ import imp
 
 def checkForOutFolder(outfolder):
     if os.path.isdir(outfolder):
-        print "The results will be in the already existent folder: %s" % outfolder
+        print("The results will be in the already existent folder: %s" % outfolder)
     else:
-        print "Creating the folder %s\n The results will be there." % outfolder
+        print("Creating the folder %s\n The results will be there." % outfolder)
         os.makedirs(outfolder)
 
 
