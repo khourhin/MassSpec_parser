@@ -125,9 +125,9 @@ def print_original_Data(dataList, TAIRmap, col_num, outfolder, background=False)
         with open(dataFile, "r") as f:
             reader = csv.reader(f, delimiter=",", quotechar='"')
             
-            with open(csvOut, "wb") as fout:
+            with open(csvOut, "w", newline='') as fout:
                 writer = csv.writer(fout, delimiter=",", quotechar='"')
-                header = next(reader) + ["TAIR"] + infiles
+                header = next(reader)# + ["TAIR"] + infiles
                 writer.writerow(header)
 
                 for row in reader:
@@ -157,7 +157,7 @@ def printOriginalData(common_to_all, dataFile, TAIRmap, csvOut):
         reader = csv.reader(f, delimiter=",", quotechar='"')
         next(reader)
 
-        with open(csvOut, "wb") as fout:
+        with open(csvOut, "w", newline='') as fout:
         
             writer = csv.writer(fout, delimiter=",", quotechar='"')
             for row in reader:
