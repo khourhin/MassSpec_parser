@@ -4,6 +4,8 @@ from lib import get_from_gi as gg
 from lib import tair_ms_parse as ms
 import os
 import argparse
+import imp
+import distutils
 
 #-------------------------------------------------------------------------------
 def checkForOutFolder(outfolder):
@@ -18,6 +20,16 @@ def checkInputExist(data):
     for inFile in data:
         if not os.path.isfile(inFile):
             raise IOError("Are you sure that the file %s exists ?" % inFile )
+
+#-------------------------------------------------------------------------------
+def checkDependencies():
+    # Check if necessary modules are installed
+    imp.find_module('numpy')
+    imp.find_module('Bio')
+
+    # Check if blast is installed
+    #distutils.spawn.find_executable("blastp")
+
 
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -44,8 +56,9 @@ if __name__ == '__main__':
                         default="MS_parse_out")
     
     args = parser.parse_args()
-#-------------------------------------------------------------------------------
-    
+
+    checkDependencies()
+
     if len(args.inputs) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
 
