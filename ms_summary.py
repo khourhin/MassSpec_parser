@@ -5,6 +5,7 @@ from lib import tair_ms_parse as ms
 import os
 import argparse
 import imp
+import shutil
 
 
 def checkForOutFolder(outfolder):
@@ -27,6 +28,8 @@ def checkDependencies():
     imp.find_module('Bio')
 
     # Check if blast is installed
+    if not shutil.which('makeblastdb'):
+        raise OSError("Are you sure blast+ is installed ?")
     #distutils.spawn.find_executable("blastp")
 
 
