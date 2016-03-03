@@ -38,20 +38,22 @@ https://pip.pypa.io/en/stable/installing/
 `import Bio`
 
 ## Usage
-python ms_summary.py [-h] -i [INPUTS [INPUTS ...]] [-b [BACKGROUND [BACKGROUND ...]]] -d DBBLAST [-c CPUS] [-o OUTFOLDER]                                                                          
-Arguments:
+python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
 
--h, --help: show this help message and exit
-
--i [INPUTS [INPUTS ...]], --inputs [INPUTS [INPUTS ...]]: CSV files of MS results. At least 2 should be given.
-
--b [BACKGROUND [BACKGROUND ...]], --background [BACKGROUND [BACKGROUND ...]]: CSV files for the background.
-
--d DBBLAST, --dbBlast DBBLAST: A database in fasta format to blast against and then create the mapping
-
--c CPUS, --cpus CPUS  Number of cpus to use for blast
-
--o OUTFOLDER, --outfolder OUTFOLDER: Folder where the output will be regenerated. Will be created if doesn't exist.
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUTS, --inputs INPUTS
+                        CSV files of MS results. At least 2 should be given.
+  -d DBBLAST, --dbBlast DBBLAST
+                        A database in fasta format to blast against and then create the mapping.
+  -b BACKGROUND, --background BACKGROUND
+                        CSV files for the background.
+  -c CPUS, --cpus CPUS  Number of cpus to use for blast.
+  -o OUTFOLDER, --outfolder OUTFOLDER
+                        Folder where the output will be regenerated. Will be created if doesn't exist.
+  -p PATHBLAST, --pathBlast PATHBLAST
+                        Folder where the blast+ executables are located, if not specified, will look in the
+                        environment PATH                                                                     
 
 ## Contributing
 1. Fork it!
