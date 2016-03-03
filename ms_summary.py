@@ -5,9 +5,8 @@ from lib import tair_ms_parse as ms
 import os
 import argparse
 import imp
-import distutils
 
-#-------------------------------------------------------------------------------
+
 def checkForOutFolder(outfolder):
     if os.path.isdir(outfolder):
         print "The results will be in the already existent folder: %s" % outfolder
@@ -15,13 +14,13 @@ def checkForOutFolder(outfolder):
         print "Creating the folder %s\n The results will be there." % outfolder
         os.makedirs(outfolder)
 
-#-------------------------------------------------------------------------------
+
 def checkInputExist(data):
     for inFile in data:
         if not os.path.isfile(inFile):
-            raise IOError("Are you sure that the file %s exists ?" % inFile )
+            raise IOError("Are you sure that the file %s exists ?" % inFile)
 
-#-------------------------------------------------------------------------------
+
 def checkDependencies():
     # Check if necessary modules are installed
     imp.find_module('numpy')
@@ -31,30 +30,36 @@ def checkDependencies():
     #distutils.spawn.find_executable("blastp")
 
 
-#-------------------------------------------------------------------------------
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
-    parser.add_argument("-i","--inputs",nargs="*",
+    parser.add_argument("-i", "--inputs", action='append',
                         help="CSV files of MS results. At least 2 should be given.",
-                        required=True )
-    
-    parser.add_argument("-b", "--background", nargs="*",
-                        help="CSV files for the background.")
-    
+                        required=True)
+
     parser.add_argument("-d", "--dbBlast",
                         help="""A database in fasta format
                         to blast against and then create the mapping""",
                         required=True)
-    
+
+    parser.add_argument("-b", "--background", action='append',
+                        help="CSV files for the background.",
+                        default=[])
+
     parser.add_argument("-c", "--cpus",
-                        help="Number of cpus to use for blast")
-    
+                        help="Number of cpus to use for blast",
+                        default=1)
+
     parser.add_argument("-o", "--outfolder",
                         help="""Folder where the output will be regenerated.
                         Will be created if doesn't exist""",
                         default="MS_parse_out")
-    
+
+    parser.add_argument("-p", "--pathBlast",
+                        help="""Folder where the blast+ executables are located,
+                        if not specified, will look in the environment PATH""",
+                        default='')
+
     args = parser.parse_args()
 
     checkDependencies()
@@ -62,31 +67,33 @@ if __name__ == '__main__':
     if len(args.inputs) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
 
-#Column where to find the gis in the csv (index starting at 0)
+# Column where to find the gis in the csv (index starting at 0)
     COL_NUM = 2
     DB = args.dbBlast
     BACKGROUND = args.background
     DATA = args.inputs
     OUTFOLDER = args.outfolder
-    
+    CPUS = args.cpus
+    PATH_BLAST = args.pathBlast
+
     checkForOutFolder(OUTFOLDER)
     checkInputExist(DATA)
     gg.format_db(DB, "prot")
 
     blast_outs = []
-    outPathFor = lambda x: os.path.join( OUTFOLDER,
-                                      os.path.basename (os.path.splitext(x)[0] ))
-    
+    outPathFor = lambda x: os.path.join(OUTFOLDER,
+                                        os.path.basename(os.path.splitext(x)[0]))
+
     for csvF in DATA + BACKGROUND:
-         fas_name = outPathFor(csvF) + ".fas"
-         gis = gg.getGIs(csvF, COL_NUM)
-         gg.getFastaFromGIs(gis, fas_name)
+        fas_name = outPathFor(csvF) + ".fas"
+        gis = gg.getGIs(csvF, COL_NUM)
+        gg.getFastaFromGIs(gis, fas_name)
 
-         blastout_name = outPathFor(csvF) + ".tab"
-         gg.do_blastP(fas_name, DB, blastout_name, 2)
-         blast_outs.append(blastout_name)
+        blastout_name = outPathFor(csvF) + ".tab"
+        gg.do_blastP(fas_name, DB, blastout_name, CPUS, 6, PATH_BLAST)
+        blast_outs.append(blastout_name)
 
-    TAIRmap =  ms.getMap(blast_outs)
+    TAIRmap = ms.getMap(blast_outs)
     ms.print_original_Data(DATA, TAIRmap, COL_NUM, OUTFOLDER, background=BACKGROUND)
 
     # Old output version (obsolete soon?)

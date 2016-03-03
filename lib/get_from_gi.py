@@ -32,7 +32,7 @@ def getFastaFromGIs(gis_list, fout_name):
     if os.path.isfile(fout_name):
         print "Fasta file %s already existing, using it for next steps ..." % fout_name
         return False
-    
+
     # Get data from NCBI
     handle = Entrez.efetch(db='protein', id=gis_list,
                            rettype='fasta', retmode='text')
@@ -48,7 +48,7 @@ def getFastaFromGIs(gis_list, fout_name):
     print "Written %s sequences to %s" % (count, fout_name)
 
 #-------------------------------------------------------------------------------
-def format_db(fasta, dbtype='prot'):
+def format_db(fasta, dbtype='prot', path_blast=''):
     """
     Format a fasta file for having them as db for blast+
     dbtype can be 'nucl' or 'prot'
@@ -57,16 +57,16 @@ def format_db(fasta, dbtype='prot'):
               for x in [fasta + ".phr", fasta + ".pin", fasta + ".psq"] ] ):
         print "Already formated database for %s" % fasta
         return False
-        
+
     print "Formatting db for %s" % fasta
-    cmd = [PATH_BLAST + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
+    cmd = [path_blast + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
     proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()
 
     return out, err
 
 #-------------------------------------------------------------------------------
-def do_blastP(query, db, outfile, cpus=1, fmt=6):
+def do_blastP(query, db, outfile, cpus, fmt=6, path_blast=''):
     """
     Launched a blastp analysis for the [query] against the [db]
     """
@@ -74,9 +74,9 @@ def do_blastP(query, db, outfile, cpus=1, fmt=6):
         print "Seems like the blast results are already present: %s" % outfile
         print "This file will be therefore used for further computations."
         return False
-    
+
     print "Starting BlastP"
-    cmd = [PATH_BLAST + 'blastp', '-query', query, '-db', db, '-out', outfile,
+    cmd = [path_blast + 'blastp', '-query', query, '-db', db, '-out', outfile,
            '-outfmt', str(fmt), '-evalue', '1e-6', '-num_threads', str(cpus) ]
 
     print " ".join(cmd)
