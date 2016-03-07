@@ -3,8 +3,8 @@ from django.views.generic.edit import FormView
 
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CompareMSForm
-from .models import CompareMSJob
-from .compare_ms import handle_uploaded_files
+from .models import FileUpload
+from .compare_ms import run_compare
 
 
 def done(request):
@@ -31,6 +31,10 @@ class CompareMSView(FormView):
     success_url = '/done/'
 
     def form_valid(self, form):
+        # This will be executed if the form is valid !
         for each in form.cleaned_data['ms_data']:
-            CompareMSJob.objects.create(file=each)
+            FileUpload.objects.create(file=each)
+        run_compare(form.cleaned_data)
+
+        print(form.cleaned_data)
         return super(CompareMSView, self).form_valid(form)
