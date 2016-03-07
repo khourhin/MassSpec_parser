@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
-import get_from_gi as gg
-import tair_ms_parse as ms
+from .libs import get_from_gi as gg
+from .libs import tair_ms_parse as ms
 import os
 import argparse
 import imp
@@ -33,7 +33,7 @@ def checkDependencies():
     #distutils.spawn.find_executable("blastp")
 
 
-def run_compare(data, background, col_num, db,
+def run_compare_cli(data, background, col_num, db,
                 outfolder, email, cpus=1, path_blast=''):
 
     checkForOutFolder(outfolder)
