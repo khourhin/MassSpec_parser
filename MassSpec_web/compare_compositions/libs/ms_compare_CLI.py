@@ -33,6 +33,33 @@ def checkDependencies():
     #distutils.spawn.find_executable("blastp")
 
 
+def run_compare(data, background, col_num, db, outfolder, cpus=1, path_blast=''):
+
+    checkForOutFolder(outfolder)
+    checkInputExist(data)
+    gg.format_db(db, "prot")
+
+    blast_outs = []
+
+    for csvF in data + background:
+        fas_name = os.path.join(outfolder,
+                                os.path.basename(
+                                    os.path.splitext(csvF)[0])) + ".fas"
+
+        gis = gg.getGIs(csvF, col_num)
+        gg.getFastaFromGIs(gis, fas_name)
+
+        blastout_name = os.path.join(outfolder,
+                                     os.path.basename(
+                                        os.path.splitext(csvF)[0])) + ".tab"
+
+        gg.do_blastP(fas_name, db, blastout_name, cpus, 6, path_blast)
+        blast_outs.append(blastout_name)
+
+    TAIRmap = ms.getMap(blast_outs)
+    ms.print_original_Data(data, TAIRmap, col_num, outfolder, background=background)
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
@@ -70,42 +97,6 @@ if __name__ == '__main__':
     if len(args.input) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
 
-# Column where to find the gis in the csv (index starting at 0)
-    COL_NUM = 2
-    DB = args.dbBlast
-    BACKGROUND = args.background
-    DATA = args.input
-    OUTFOLDER = args.outfolder
-    CPUS = args.cpus
-    PATH_BLAST = args.pathBlast
-
-    checkForOutFolder(OUTFOLDER)
-    checkInputExist(DATA)
-    gg.format_db(DB, "prot")
-
-    blast_outs = []
-    outPathFor = lambda x: os.path.join(OUTFOLDER,
-                                        os.path.basename(os.path.splitext(x)[0]))
-
-    for csvF in DATA + BACKGROUND:
-        fas_name = outPathFor(csvF) + ".fas"
-        gis = gg.getGIs(csvF, COL_NUM)
-        gg.getFastaFromGIs(gis, fas_name)
-
-        blastout_name = outPathFor(csvF) + ".tab"
-        gg.do_blastP(fas_name, DB, blastout_name, CPUS, 6, PATH_BLAST)
-        blast_outs.append(blastout_name)
-
-    TAIRmap = ms.getMap(blast_outs)
-    ms.print_original_Data(DATA, TAIRmap, COL_NUM, OUTFOLDER, background=BACKGROUND)
-
-    # Old output version (obsolete soon?)
-#    common_to_all = ms.compareTAIRs( DATA, TAIRmap, OUTFOLDER, background=BACKGROUND )
-#
-    # for csvF in DATA:
-    #     csvOut = outPathFor(csvF) + "_with_background.csv"
-    #     ms.printOriginalData( common_to_all[0], csvF, TAIRmap, csvOut )
-
-    #     if BACKGROUND:
-    #         csvOut = outPathFor(csvF) + "_background_removed.csv"
-    #         ms.printOriginalData( common_to_all[1], csvF, TAIRmap, csvOut )
+    run_compare(args.input, args.background, 2,
+                args.dbBlast, args.outfolder,
+                args.cpus, args.pathBlast)

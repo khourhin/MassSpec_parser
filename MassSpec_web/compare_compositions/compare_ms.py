@@ -13,5 +13,10 @@ def run_compare(data):
     ms_background = data['ms_background']
     ms_data = data['ms_data']
 
-    print(user)
-    print(FileUpload.objects.all())
+# Alternative:
+# 1: streaming (in memory)
+
+
+# 2: TO DO To check (for big files using the copy to the server)
+# print(user)
+    print(FileUpload.object.get())
