@@ -1,5 +1,20 @@
-<form class="" action="/your-name/" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{form}}
-  <input type="submit" name="" value="Submit">
-</form>
+{% load staticfiles %}
+<html>
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+
+<body>
+  <div class="">
+    <h1>Mass Spectrometry comparisons</h1>
+    <form class="" action="{% url "compare_ms" %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{form.as_p}}
+      <input type="submit" name="" value="Submit">
+    </form>
+  </div>
+</body>
+
+</html>

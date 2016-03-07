@@ -1,7 +1,10 @@
 from django import forms
 
+from multiupload.fields import MultiFileField
+
+
 class CompareMSForm(forms.Form):
-    your_name = forms.CharField(label='Your name', max_length=30)
-    ms1_file = forms.FileField()
-    ms2_file = forms.FileField()
-    
+    name = forms.CharField(label='Your name', max_length=30)
+    email = forms.EmailField(label='email')
+    ms_data = MultiFileField(min_num=2)
+    ms_background = MultiFileField(min_num=1)
