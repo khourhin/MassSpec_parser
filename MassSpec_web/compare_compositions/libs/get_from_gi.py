@@ -4,8 +4,6 @@ import os
 import csv
 import subprocess
 
-Entrez.email = 'ekornobis@gmail.com'
-
 #-------------------------------------------------------------------------------
 def getGIs(gis_csv, col_num):
     """
@@ -23,10 +21,12 @@ def getGIs(gis_csv, col_num):
     return gis
 
 #-------------------------------------------------------------------------------
-def getFastaFromGIs(gis_list, fout_name):
+def getFastaFromGIs(gis_list, fout_name, email):
     """
     From a list of GIs (as string) get a multifasta with name fout_name + ".fas"
     """
+
+    Entrez.email = 'ekornobis@gmail.com'
 
     if os.path.isfile(fout_name):
         print("Fasta file %s already existing, using it for next steps ..." % fout_name)

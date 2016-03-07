@@ -33,7 +33,8 @@ def checkDependencies():
     #distutils.spawn.find_executable("blastp")
 
 
-def run_compare(data, background, col_num, db, outfolder, cpus=1, path_blast=''):
+def run_compare(data, background, col_num, db,
+                outfolder, email, cpus=1, path_blast=''):
 
     checkForOutFolder(outfolder)
     checkInputExist(data)
@@ -47,7 +48,7 @@ def run_compare(data, background, col_num, db, outfolder, cpus=1, path_blast='')
                                     os.path.splitext(csvF)[0])) + ".fas"
 
         gis = gg.getGIs(csvF, col_num)
-        gg.getFastaFromGIs(gis, fas_name)
+        gg.getFastaFromGIs(gis, fas_name, email)
 
         blastout_name = os.path.join(outfolder,
                                      os.path.basename(
@@ -89,6 +90,9 @@ if __name__ == '__main__':
                         help="""Folder where the blast+ executables are located,
                         if not specified, will look in the environment PATH""",
                         default='')
+    parser.add_argument("-e", "--email",
+                        help="Email mandatory for Entrez queries (GI lookup).",
+                        required=True)
 
     args = parser.parse_args()
 
@@ -99,4 +103,4 @@ if __name__ == '__main__':
 
     run_compare(args.input, args.background, 2,
                 args.dbBlast, args.outfolder,
-                args.cpus, args.pathBlast)
+                args.email, args.cpus, args.pathBlast)
