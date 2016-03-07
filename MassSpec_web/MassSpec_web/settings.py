@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'compare_composition',
+    'compare_compositions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
