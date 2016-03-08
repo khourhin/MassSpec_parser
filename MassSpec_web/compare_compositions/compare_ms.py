@@ -13,11 +13,12 @@ def run_compare(data):
     email = data['email']
     ms_background = data['ms_background']
     ms_data = data['ms_data']
+    blast_db = data['blast_db']
 
     run_compare_cli(ms_data, ms_background, 2,
-                               'libs/demo/TAIR10_pep_20101214_updated.txt',
-                               'MS_parse_out',
-                               'khourhin@gmail.com', 1, '')
+                    blast_db,
+                    'MS_parse_out',
+                    'khourhin@gmail.com', 1, '')
 
 # Alternative:
 # 1: streaming (in memory)

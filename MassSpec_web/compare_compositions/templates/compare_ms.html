@@ -1,12 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<h1>Mass Spectrometry comparisons</h1>
+
 <div class="">
-    <h1>Mass Spectrometry comparisons</h1>
-    <form class="" action="{% url "compare_ms" %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input type="submit" name="" value="Submit">
-    </form>
-  </div>
+  <h2>Uploads</h2>
+  <form class="" action="{% url "compare_ms" %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{upload_form.as_p}}
+    <input type="submit" name="upload" value="Upload">
+  </form>
+</div>
+{% if docs %}
+<div>
+<p>
+  Already uploaded files:
+</p>
+<ul>
+  {% for doc in docs %}
+  <li>{{ doc.doc.name}}</li>
+  {% endfor %}
+</ul>
+</div>
+{% else %}
+<div>
+<p>
+  No documents uploaded.
+</p>
+</div>
+{% endif %}
+
+
+<div class="">
+  <h2>Run MS compare job</h2>
+  <form class="" action="{% url "compare_ms" %}" method="post">
+    {% csrf_token %}
+    {{runjob_form.as_p}}
+    <input type="submit" name="runjob" value="Submit">
+  </form>
+</div>
+
 {% endblock %}

@@ -2,4 +2,4 @@ from django.db import models
 
 
 class FileUpload(models.Model):
-    file = models.FileField(upload_to='uploads')
+    doc = models.FileField(upload_to='uploads')

@@ -1,8 +1,9 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CompareMSForm
+from .forms import CompareMSForm, UploadForm
 from .models import FileUpload
 from .compare_ms import run_compare
 
@@ -25,16 +26,35 @@ def create_user(request):
     return render(request, 'register.html', {'form': form})
 
 
-class CompareMSView(FormView):
-    template_name = 'compare_ms.html'
-    form_class = CompareMSForm
-    success_url = '/done/'
+def compare_ms(request):
+    docs = FileUpload.objects.all()
 
-    def form_valid(self, form):
-        # This will be executed if the form is valid !
-        for each in form.cleaned_data['ms_data']:
-            FileUpload.objects.create(file=each)
-        run_compare(form.cleaned_data)
+    if request.method == 'POST':
+        upload_form = UploadForm(request.POST, request.FILES)
+        runjob_form = CompareMSForm(request.POST)
+        runjob_form.fields['ms_in'].choices = [(doc.id, doc.doc.name) for doc in docs]
+        print(request.POST)
+        if 'upload' in request.POST:
 
-        print(form.cleaned_data)
-        return super(CompareMSView, self).form_valid(form)
+            if upload_form.is_valid():
+                new_doc = FileUpload(doc=request.FILES['ms_data'])
+                new_doc.save()
+
+                return HttpResponseRedirect('/')
+
+        elif 'runjob' in request.POST:
+            print("submit job")
+            if runjob_form.is_valid():
+                print("Have to start a job here ... right now doing nothing")
+
+                return HttpResponseRedirect('/')
+            else:
+                print("NOT CORRECT")
+    else:
+        upload_form = UploadForm()
+        runjob_form = CompareMSForm()
+        runjob_form.fields['ms_in'].choices = [(doc.id, doc.doc.name) for doc in docs]
+
+    return render(request, 'compare_ms.html', {'upload_form': upload_form,
+                                               'runjob_form': runjob_form,
+                                               'docs': docs})
