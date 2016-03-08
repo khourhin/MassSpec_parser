@@ -6,6 +6,7 @@ import os
 import argparse
 import imp
 import shutil
+from django.conf import settings
 
 
 def checkForOutFolder(outfolder):
@@ -36,8 +37,9 @@ def checkDependencies():
 def run_compare_cli(data, background, col_num, db,
                     outfolder, email, cpus=1, path_blast=''):
 
-    print("Reaching !!!")
-    return 0
+    # TODO This could possibly be improved
+    os.chdir(settings.MEDIA_ROOT)
+    db = db[0]
 
     checkForOutFolder(outfolder)
     checkInputExist(data)
@@ -65,13 +67,14 @@ def run_compare_cli(data, background, col_num, db,
 
 
 if __name__ == '__main__':
+    # FIXME Currently the CLI without the web interface will not work
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
     parser.add_argument("-i", "--input", action='append',
                         help="CSV files of MS results. At least 2 should be given.",
                         required=True)
 
-    parser.add_argument("-d", "--dbBlast",
+    parser.add_argument("-d", "--dbBlast", action='append',
                         help="""A database in fasta format
                         to blast against and then create the mapping""",
                         required=True)
