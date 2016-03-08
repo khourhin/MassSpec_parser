@@ -1,0 +1,30 @@
+<!-- loading the css (and more statics) -->
+{% load staticfiles %}
+<html>
+
+<head>
+  <!-- Import bootstrap -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <!-- For the css -->
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+  <link href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+  <title>MassSpec</title>
+</head>
+
+<body>
+    <div class="page-header">
+
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+            {% block content %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
