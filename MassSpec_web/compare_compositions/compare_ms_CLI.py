@@ -34,7 +34,10 @@ def checkDependencies():
 
 
 def run_compare_cli(data, background, col_num, db,
-                outfolder, email, cpus=1, path_blast=''):
+                    outfolder, email, cpus=1, path_blast=''):
+
+    print("Reaching !!!")
+    return 0
 
     checkForOutFolder(outfolder)
     checkInputExist(data)

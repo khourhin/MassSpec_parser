@@ -5,7 +5,7 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CompareMSForm, UploadForm
 from .models import FileUpload
-from .compare_ms import run_compare
+from .compare_ms_CLI import run_compare_cli
 
 
 def done(request):
@@ -32,7 +32,6 @@ def compare_ms(request):
     if request.method == 'POST':
         upload_form = UploadForm(request.POST, request.FILES)
         runjob_form = CompareMSForm(request.POST)
-        runjob_form.fields['ms_in'].choices = [(doc.id, doc.doc.name) for doc in docs]
         print(request.POST)
         if 'upload' in request.POST:
 
@@ -45,15 +44,17 @@ def compare_ms(request):
         elif 'runjob' in request.POST:
             print("submit job")
             if runjob_form.is_valid():
-                print("Have to start a job here ... right now doing nothing")
+                data = runjob_form.cleaned_data
+
+                run_compare_cli(data['ms_in'], data['bck_in'], 2,
+                                data['blast_db'], 'MS_parse_out',
+                                data['email'], 1, '')
 
                 return HttpResponseRedirect('/')
-            else:
-                print("NOT CORRECT")
+
     else:
         upload_form = UploadForm()
         runjob_form = CompareMSForm()
-        runjob_form.fields['ms_in'].choices = [(doc.id, doc.doc.name) for doc in docs]
 
     return render(request, 'compare_ms.html', {'upload_form': upload_form,
                                                'runjob_form': runjob_form,
