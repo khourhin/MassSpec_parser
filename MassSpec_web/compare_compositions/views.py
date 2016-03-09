@@ -47,9 +47,15 @@ def compare_ms(request):
                 data = runjob_form.cleaned_data
 
                 print(data)
-                # run_compare_cli(data['ms_in'], data['bck_in'], 2,
-                #                 data['blast_db'], 'MS_parse_out',
-                #                 data['email'], 1, '')
+
+                run_compare_cli([f.doc.name for f in data['ms_in']],
+                                [f.doc.name for f in data['ms_bck']],
+                                2,
+                                [f.doc.name for f in data['blast_db']],
+                                'MS_parse_out',
+                                data['email'],
+                                1,
+                                '')
 
                 return HttpResponseRedirect('/')
 

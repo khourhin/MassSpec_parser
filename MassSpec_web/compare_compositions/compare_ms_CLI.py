@@ -37,6 +37,7 @@ def checkDependencies():
 def run_compare_cli(data, background, col_num, db,
                     outfolder, email, cpus=1, path_blast=''):
 
+    print("ahahhah")
     # TODO This could possibly be improved
     os.chdir(settings.MEDIA_ROOT)
     db = db[0]
