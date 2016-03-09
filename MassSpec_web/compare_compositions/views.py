@@ -33,11 +33,11 @@ def compare_ms(request):
         upload_form = UploadForm(request.POST, request.FILES)
         runjob_form = CompareMSForm(request.POST)
         print(request.POST)
+        print(request.FILES)
         if 'upload' in request.POST:
 
             if upload_form.is_valid():
-                new_doc = FileUpload(doc=request.FILES['ms_data'])
-                new_doc.save()
+                upload_form.save()
 
                 return HttpResponseRedirect('/')
 
@@ -46,9 +46,10 @@ def compare_ms(request):
             if runjob_form.is_valid():
                 data = runjob_form.cleaned_data
 
-                run_compare_cli(data['ms_in'], data['bck_in'], 2,
-                                data['blast_db'], 'MS_parse_out',
-                                data['email'], 1, '')
+                print(data)
+                # run_compare_cli(data['ms_in'], data['bck_in'], 2,
+                #                 data['blast_db'], 'MS_parse_out',
+                #                 data['email'], 1, '')
 
                 return HttpResponseRedirect('/')
 
