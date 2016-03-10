@@ -1,11 +1,20 @@
 #! /usr/bin/env python
-
-from lib import get_from_gi as gg
-from lib import tair_ms_parse as ms
 import os
 import argparse
 import imp
 import shutil
+from django.conf import settings
+
+if __name__ == '__main__':
+    # using the CLI
+    from libs import get_from_gi as gg
+    from libs import tair_ms_parse as ms
+    WDIR = ''
+else:
+    # Using django web
+    from .libs import get_from_gi as gg
+    from .libs import tair_ms_parse as ms
+    WDIR = settings.MEDIA_ROOT
 
 
 def checkForOutFolder(outfolder):
@@ -24,7 +33,6 @@ def checkInputExist(data):
 
 def checkDependencies():
     # Check if necessary modules are installed
-    imp.find_module('numpy')
     imp.find_module('Bio')
 
     # Check if blast is installed
@@ -33,14 +41,48 @@ def checkDependencies():
     #distutils.spawn.find_executable("blastp")
 
 
+def run_compare_cli(data, background, col_num, db,
+                    outfolder, email, cpus=1, path_blast=''):
+
+    # TODO This could possibly be improved
+    if WDIR:
+        os.chdir(WDIR)
+    db = db[0]
+
+    checkForOutFolder(outfolder)
+    checkInputExist(data)
+    gg.format_db(db, "prot")
+
+    blast_outs = []
+
+    for csvF in data + background:
+        fas_name = os.path.join(outfolder,
+                                os.path.basename(
+                                    os.path.splitext(csvF)[0])) + ".fas"
+
+        gis = gg.getGIs(csvF, col_num)
+        gg.getFastaFromGIs(gis, fas_name, email)
+
+        blastout_name = os.path.join(outfolder,
+                                     os.path.basename(
+                                        os.path.splitext(csvF)[0])) + ".tab"
+
+        gg.do_blastP(fas_name, db, blastout_name, cpus, 6, path_blast)
+        blast_outs.append(blastout_name)
+
+    TAIRmap = ms.getMap(blast_outs)
+    ms.print_original_Data(data, TAIRmap, col_num, outfolder, background=background)
+
+
 if __name__ == '__main__':
+    # FIXME Currently the CLI without the web interface will not work
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
     parser.add_argument("-i", "--input", action='append',
                         help="CSV files of MS results. At least 2 should be given.",
                         required=True)
 
-    parser.add_argument("-d", "--dbBlast",
+    parser.add_argument("-d", "--dbBlast", action='append',
                         help="""A database in fasta format
                         to blast against and then create the mapping""",
                         required=True)
@@ -62,6 +104,9 @@ if __name__ == '__main__':
                         help="""Folder where the blast+ executables are located,
                         if not specified, will look in the environment PATH""",
                         default='')
+    parser.add_argument("-e", "--email",
+                        help="Email mandatory for Entrez queries (GI lookup).",
+                        required=True)
 
     args = parser.parse_args()
 
@@ -70,42 +115,6 @@ if __name__ == '__main__':
     if len(args.input) < 2:
         raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
 
-# Column where to find the gis in the csv (index starting at 0)
-    COL_NUM = 2
-    DB = args.dbBlast
-    BACKGROUND = args.background
-    DATA = args.input
-    OUTFOLDER = args.outfolder
-    CPUS = args.cpus
-    PATH_BLAST = args.pathBlast
-
-    checkForOutFolder(OUTFOLDER)
-    checkInputExist(DATA)
-    gg.format_db(DB, "prot")
-
-    blast_outs = []
-    outPathFor = lambda x: os.path.join(OUTFOLDER,
-                                        os.path.basename(os.path.splitext(x)[0]))
-
-    for csvF in DATA + BACKGROUND:
-        fas_name = outPathFor(csvF) + ".fas"
-        gis = gg.getGIs(csvF, COL_NUM)
-        gg.getFastaFromGIs(gis, fas_name)
-
-        blastout_name = outPathFor(csvF) + ".tab"
-        gg.do_blastP(fas_name, DB, blastout_name, CPUS, 6, PATH_BLAST)
-        blast_outs.append(blastout_name)
-
-    TAIRmap = ms.getMap(blast_outs)
-    ms.print_original_Data(DATA, TAIRmap, COL_NUM, OUTFOLDER, background=BACKGROUND)
-
-    # Old output version (obsolete soon?)
-#    common_to_all = ms.compareTAIRs( DATA, TAIRmap, OUTFOLDER, background=BACKGROUND )
-#
-    # for csvF in DATA:
-    #     csvOut = outPathFor(csvF) + "_with_background.csv"
-    #     ms.printOriginalData( common_to_all[0], csvF, TAIRmap, csvOut )
-
-    #     if BACKGROUND:
-    #         csvOut = outPathFor(csvF) + "_background_removed.csv"
-    #         ms.printOriginalData( common_to_all[1], csvF, TAIRmap, csvOut )
+    run_compare_cli(args.input, args.background, 2,
+                args.dbBlast, args.outfolder,
+                args.email, args.cpus, args.pathBlast)

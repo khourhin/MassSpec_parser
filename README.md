@@ -5,8 +5,9 @@ A python library to parse Mass Spectrometry results and annotate with TAIR acces
 - Python3
 - Numpy
 - Biopython
+- blast+
 
-## Installation
+## Installation for the command line version:
 If you don't have yet the requirements installed:
 #### Install Python3:
 https://www.python.org/downloads/
@@ -37,7 +38,16 @@ https://pip.pypa.io/en/stable/installing/
 
 `import Bio`
 
-## Usage
+#### Install Blast+
+https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download
+
+## Additional installation for the web interface version:
+### Install Django framework
+`pip3 install django==1.9.4`
+
+For the web interface version, blast+ **have to be** in your PATH environment variable.
+
+## Command line Usage
 python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
 
 Arguments:
@@ -67,7 +77,15 @@ Arguments:
 
   * -p PATHBLAST, --pathBlast PATHBLAST
 
-  Folder where the blast+ executables are located, if not specified, will look in the environment PATH.                                                                     
+  Folder where the blast+ executables are located, if not specified, will look in the environment PATH.
+
+## Web interface Usage
+`python3 manage.py runserver`
+
+Then go to your webbrowser and go the URL:
+
+http://localhost:8000/
+
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
