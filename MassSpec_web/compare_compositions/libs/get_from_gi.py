@@ -4,9 +4,6 @@ import os
 import csv
 import subprocess
 
-PATH_BLAST = '/home/tiennou/Documents/Taff/softwares/RNA-seq/blast+/bin/'
-Entrez.email = 'ekornobis@gmail.com'
-
 #-------------------------------------------------------------------------------
 def getGIs(gis_csv, col_num):
     """
@@ -20,19 +17,21 @@ def getGIs(gis_csv, col_num):
         for row in csv.reader(f):
             gis.append(row[col_num])
 
-    print "Found %s GIs in csv %s" % (len(gis), gis_csv)
+    print("Found %s GIs in csv %s" % (len(gis), gis_csv))
     return gis
 
 #-------------------------------------------------------------------------------
-def getFastaFromGIs(gis_list, fout_name):
+def getFastaFromGIs(gis_list, fout_name, email):
     """
     From a list of GIs (as string) get a multifasta with name fout_name + ".fas"
     """
 
+    Entrez.email = 'ekornobis@gmail.com'
+
     if os.path.isfile(fout_name):
-        print "Fasta file %s already existing, using it for next steps ..." % fout_name
+        print("Fasta file %s already existing, using it for next steps ..." % fout_name)
         return False
-    
+
     # Get data from NCBI
     handle = Entrez.efetch(db='protein', id=gis_list,
                            rettype='fasta', retmode='text')
@@ -45,40 +44,40 @@ def getFastaFromGIs(gis_list, fout_name):
             fout.write(str(record.seq) + "\n")
 
     handle.close()
-    print "Written %s sequences to %s" % (count, fout_name)
+    print("Written %s sequences to %s" % (count, fout_name))
 
 #-------------------------------------------------------------------------------
-def format_db(fasta, dbtype='prot'):
+def format_db(fasta, dbtype='prot', path_blast=''):
     """
     Format a fasta file for having them as db for blast+
     dbtype can be 'nucl' or 'prot'
     """
     if all( [ os.path.isfile(x)
               for x in [fasta + ".phr", fasta + ".pin", fasta + ".psq"] ] ):
-        print "Already formated database for %s" % fasta
+        print("Already formated database for %s" % fasta)
         return False
-        
-    print "Formatting db for %s" % fasta
-    cmd = [PATH_BLAST + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
+
+    print("Formatting db for %s" % fasta)
+    cmd = [path_blast + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
     proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()
 
     return out, err
 
 #-------------------------------------------------------------------------------
-def do_blastP(query, db, outfile, cpus=1, fmt=6):
+def do_blastP(query, db, outfile, cpus, fmt=6, path_blast=''):
     """
     Launched a blastp analysis for the [query] against the [db]
     """
     if os.path.isfile(outfile):
-        print "Seems like the blast results are already present: %s" % outfile
-        print "This file will be therefore used for further computations."
+        print("Seems like the blast results are already present: %s" % outfile)
+        print("This file will be therefore used for further computations.")
         return False
-    
-    print "Starting BlastP"
-    cmd = [PATH_BLAST + 'blastp', '-query', query, '-db', db, '-out', outfile,
+
+    print("Starting BlastP")
+    cmd = [path_blast + 'blastp', '-query', query, '-db', db, '-out', outfile,
            '-outfmt', str(fmt), '-evalue', '1e-6', '-num_threads', str(cpus) ]
 
-    print " ".join(cmd)
+    print(" ".join(cmd))
     proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()

@@ -1,2 +1,6 @@
 *.pyc
-lib/*.pyc
+myenv
+demo
+/MassSpec_web/db.sqlite3
+/MassSpec_web/*/migrations
+/user_data
