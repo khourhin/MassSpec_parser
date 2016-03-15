@@ -83,7 +83,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
     parser.add_argument("-i", "--input", action='append',
                         help="""CSV files of MS results.
-                                At least 2 should be given.""",
+                                At least 1 should be given.""",
                         required=True)
 
     parser.add_argument("-d", "--dbBlast", action='append',
@@ -115,10 +115,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     checkDependencies()
-
-    if len(args.input) < 2:
-        raise IOError("""At least 2 csvs files are required to compute
-                      a common set of TAIRS""")
 
     run_compare_cli(args.input, args.background, 2,
                     args.dbBlast, args.outfolder,
