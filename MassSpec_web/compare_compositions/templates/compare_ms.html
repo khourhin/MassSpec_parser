@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
+{% load bootstrap_tags %}
 
 {% block content %}
+<div class="col-md-6">
+  <div class="well">
+    <h2>Uploads</h2>
+    <form class="" action="{% url "compare_ms" %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{upload_form|as_bootstrap}}
+      <input type="submit" class='btn btn-primary' name="upload" value="Upload">
+    </form>
+  {% if docs %}
 
-<h1>Mass Spectrometry comparisons</h1>
-
-<div class="">
-  <h2>Uploads</h2>
-  <form class="" action="{% url "compare_ms" %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{upload_form.as_p}}
-    <input type="submit" name="upload" value="Upload">
-  </form>
-</div>
-{% if docs %}
 <div>
 <p>
   Already uploaded files:
 </p>
-<ul>
+<ul class="list-group">
   {% for doc in docs %}
-  <li>{{ doc.doc.name}}</li>
+  <li class="list-group-item">{{ doc.doc.name}}</li>
   {% endfor %}
 </ul>
 </div>
@@ -30,15 +29,19 @@
 </p>
 </div>
 {% endif %}
+  </div>
+</div>
 
 
-<div class="">
-  <h2>Run MS compare job</h2>
-  <form class="" action="{% url "compare_ms" %}" method="post">
-    {% csrf_token %}
-    {{runjob_form.as_p}}
-    <input type="submit" name="runjob" value="Submit">
-  </form>
+<div class="col-md-6">
+  <div class="well">
+    <h2>Annotate and Compare MS jobs</h2>
+    <form class="" action="{% url "compare_ms" %}" method="post">
+      {% csrf_token %}
+      {{runjob_form|as_bootstrap}}
+      <input type="submit" class='btn btn-primary' name="runjob" value="Submit">
+    </form>
+  </div>
 </div>
 
 {% endblock %}

@@ -57,7 +57,7 @@ def compare_ms(request):
                                 1,
                                 '')
 
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/done')
 
     else:
         upload_form = UploadForm()
