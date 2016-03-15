@@ -3,7 +3,6 @@ import os
 import argparse
 import imp
 import shutil
-from django.conf import settings
 
 if __name__ == '__main__':
     # using the CLI
@@ -14,6 +13,7 @@ else:
     # Using django web
     from .libs import get_from_gi as gg
     from .libs import tair_ms_parse as ms
+    from django.conf import settings
     WDIR = settings.MEDIA_ROOT
 
 
