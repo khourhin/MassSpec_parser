@@ -47,11 +47,11 @@ Arguments:
 
   * -i INPUT, --inputs INPUT
 
-  CSV file of MS results. At least 2 should be given.
+  CSV file of MS results. One csv at least is required.
 
   * -d DBBLAST, --dbBlast DBBLAST
 
-  A database in fasta format to blast against and then create the mapping.
+  A database in fasta format to blast against and then create the mapping. One fasta is required.
 
   * -b BACKGROUND, --background BACKGROUND
 
