@@ -47,7 +47,7 @@ Arguments:
 
   * -i INPUT, --inputs INPUT
 
-  CSV file of MS results. One csv at least is required.
+  CSV file of MS results (more than one can be given). One csv at least is required.
 
   * -d DBBLAST, --dbBlast DBBLAST
 
