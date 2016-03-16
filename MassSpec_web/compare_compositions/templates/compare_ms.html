@@ -38,7 +38,7 @@
     <h2>Annotate and Compare MS jobs</h2>
     <form class="" action="{% url "compare_ms" %}" method="post">
       {% csrf_token %}
-      {{runjob_form|as_bootstrap}}
+      {{runjob_form.as_p}}
       <input type="submit" class='btn btn-primary' name="runjob" value="Submit">
     </form>
   </div>

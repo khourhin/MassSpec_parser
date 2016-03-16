@@ -1,5 +1,4 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 
 from django.contrib.auth.forms import UserCreationForm
@@ -39,7 +38,7 @@ def compare_ms(request):
             if upload_form.is_valid():
                 upload_form.save()
 
-                return HttpResponseRedirect('/')
+                return redirect('compare_ms')
 
         elif 'runjob' in request.POST:
             print("submit job")
@@ -57,7 +56,7 @@ def compare_ms(request):
                                 1,
                                 '')
 
-                return HttpResponseRedirect('/done')
+                return redirect('done')
 
     else:
         upload_form = UploadForm()
