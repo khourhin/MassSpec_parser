@@ -1,51 +1,40 @@
 # MassSpec_parser
 A python library to parse Mass Spectrometry results and annotate with TAIR accessions
 
-## Requirements
+## Installation with Docker
+- Install Docker
+
+https://docs.docker.com/
+
+In Docker:
+
+`docker run /khourhin/bioinfo -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d /khourhin/bioinfo`
+
+### On Windows
+To get the IP to check with your browser:
+
+`docker-machine ip`
+
+Open your internet browser with URL:
+
+PREVIOUS_STEP_IP:8000
+
+### On Linux (and Mac I guess)
+Open your internet browser with URL:
+
+localhost:8000
+
+## Classical Installation
+
+### Requirements
 - Python3
 - Numpy
 - Biopython
 - blast+
 
-## Installation for the command line version:
-If you don't have yet the requirements installed:
-#### Install Python3:
-https://www.python.org/downloads/
-
-If you are using Windows, you might have to add the path to Python
-into your path variable.
-
-#### (FOR WINDOWS) Install Microsoft Visual C++ compiler for Python3:
-https://www.microsoft.com/en-us/download/details.aspx?id=44266
-
-#### Install Pip (for easyer python module installation):
-https://pip.pypa.io/en/stable/installing/
-
-#### Install numpy module:
-`pip install numpy`
-
-#### Install biopython module:
-`pip install biopython`
-
-#### Verify that everything is all set:
-\# In the command line:
-
-`python`
-
-\# In the python interpreter
-
-`import numpy`
-
-`import Bio`
-
-#### Install Blast+
-https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download
-
-## Additional installation for the web interface version:
-### Install Django framework
-`pip3 install django==1.9.4`
-
-For the web interface version, blast+ **have to be** in your PATH environment variable.
+For the web platform version:
+- django 1.9.4
+- django-forms-bootstrap
 
 ## Command line Usage
 python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
@@ -82,7 +71,7 @@ Arguments:
 ## Web interface Usage
 `python3 manage.py runserver`
 
-Then go to your webbrowser and go the URL:
+Then go to your web browser and go the URL:
 
 http://localhost:8000/
 
