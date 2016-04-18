@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic.edit import FormView
 
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CompareMSForm, UploadForm
-from .models import FileUpload
+from .models import FileUpload, Job
 from .compare_ms_CLI import run_compare_cli
 
 
@@ -45,16 +44,19 @@ def compare_ms(request):
             if runjob_form.is_valid():
                 data = runjob_form.cleaned_data
 
+                ms_in = [f.doc.name for f in data['ms_in']]
+                ms_bck = [f.doc.name for f in data['ms_bck']]
+                blast_db = [f.doc.name for f in data['blast_db']]
                 print(data)
 
-                run_compare_cli([f.doc.name for f in data['ms_in']],
-                                [f.doc.name for f in data['ms_bck']],
-                                2,
-                                [f.doc.name for f in data['blast_db']],
-                                'MS_parse_out',
-                                data['email'],
-                                1,
-                                '')
+                run_compare_cli(ms_in, ms_bck, 2, blast_db, 'MS_parse_out',
+                                data['email'], 1, '')
+
+                Job.objects.create(name=data['name'],
+                                   ms_in=','.join(ms_in),
+                                   ms_bck=','.join(ms_bck),
+                                   blast_db=','.join(blast_db),
+                                   )
 
                 return redirect('done')
 

@@ -1,14 +1,14 @@
 # MassSpec_parser
 A python library to parse Mass Spectrometry results and annotate with TAIR accessions
 
-## Installation with Docker
+## Usage with Docker
 - Install Docker
 
 https://docs.docker.com/
 
 In Docker:
 
-`docker run /khourhin/bioinfo -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d /khourhin/bioinfo`
+`docker run -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d khourhin/bioinfo`
 
 ### On Windows
 To get the IP to check with your browser:
@@ -35,6 +35,13 @@ localhost:8000
 For the web platform version:
 - django 1.9.4
 - django-forms-bootstrap
+
+## Web interface Usage
+`python3 manage.py runserver`
+
+Then go to your web browser and go the URL:
+
+http://localhost:8000/
 
 ## Command line Usage
 python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
@@ -67,13 +74,6 @@ Arguments:
   * -p PATHBLAST, --pathBlast PATHBLAST
 
   Folder where the blast+ executables are located, if not specified, will look in the environment PATH.
-
-## Web interface Usage
-`python3 manage.py runserver`
-
-Then go to your web browser and go the URL:
-
-http://localhost:8000/
 
 ## Contributing
 1. Fork it!
