@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import CompareMSForm, UploadForm
 from .models import FileUpload, Job
 from .compare_ms_CLI import run_compare_cli
-
+from django.contrib import messages
 
 def done(request):
     return render(request, 'done.html')
@@ -49,16 +49,19 @@ def compare_ms(request):
                 blast_db = [f.doc.name for f in data['blast_db']]
                 print(data)
 
-                run_compare_cli(ms_in, ms_bck, 2, blast_db, 'MS_parse_out',
-                                data['email'], 1, '')
+                try:
+                    run_compare_cli(ms_in, ms_bck, 2, blast_db, 'MS_parse_out',
+                                    data['email'], 1, '')
+                except IOError as e:
+                    messages.error(request, "ERROR: %s" % e)
 
-                Job.objects.create(name=data['name'],
-                                   ms_in=','.join(ms_in),
-                                   ms_bck=','.join(ms_bck),
-                                   blast_db=','.join(blast_db),
-                                   )
-
-                return redirect('done')
+                else:
+                    messages.success(request, "Successfull !")
+                    Job.objects.create(name=data['name'],
+                                       ms_in=','.join(ms_in),
+                                       ms_bck=','.join(ms_bck),
+                                       blast_db=','.join(blast_db),
+                                       )
 
     else:
         upload_form = UploadForm()
