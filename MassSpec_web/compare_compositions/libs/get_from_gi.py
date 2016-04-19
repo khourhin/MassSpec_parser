@@ -15,8 +15,12 @@ def getGIs(gis_csv, col_num):
     with open(gis_csv, 'r') as f:
         next(f)
         for row in csv.reader(f):
-            gis.append(row[col_num])
-
+            if row[col_num].lower().startswith("gi|"):
+                gis.append(row[col_num])
+            else:
+                raise IOError("""The column number {0} in the file {1}
+                              doesn't start with 'gi|'. Is this column a GI
+                              accession column ?""".format(col_num, gis_csv))
     print("Found %s GIs in csv %s" % (len(gis), gis_csv))
     return gis
 
