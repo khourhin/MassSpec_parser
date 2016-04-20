@@ -1,0 +1,27 @@
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  {% if message.tags == "error" %}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{message}}
+</div>
+  {% elif message.tags == "success" %}
+<div class="alert alert-success" role="alert">
+  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{message}}
+</div>
+{% elif message.tags == "info" %}
+<div class="alert alert-info" role="alert">
+<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+<span class="sr-only">Error:</span>
+{{message}}
+</div>
+  {% else %}
+    <li{% if message.tags %} class="{{ message.tags}}"{% endif %}>{{ message }}</li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}

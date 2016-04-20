@@ -4,7 +4,7 @@ import os
 import csv
 import subprocess
 
-#-------------------------------------------------------------------------------
+
 def getGIs(gis_csv, col_num):
     """
     Get the GIs from a csv file, specifying the number of the column
@@ -15,21 +15,26 @@ def getGIs(gis_csv, col_num):
     with open(gis_csv, 'r') as f:
         next(f)
         for row in csv.reader(f):
-            gis.append(row[col_num])
-
+            if row[col_num].lower().startswith("gi|"):
+                gis.append(row[col_num])
+            else:
+                raise IOError("""The column number {0} in the file {1}
+                              doesn't start with 'gi|'. Is this column a GI
+                              accession column ?""".format(col_num, gis_csv))
     print("Found %s GIs in csv %s" % (len(gis), gis_csv))
     return gis
 
-#-------------------------------------------------------------------------------
+
 def getFastaFromGIs(gis_list, fout_name, email):
     """
-    From a list of GIs (as string) get a multifasta with name fout_name + ".fas"
+    From a list of GIs (as string) get a multifasta file fout_name + ".fas"
     """
 
     Entrez.email = 'ekornobis@gmail.com'
 
     if os.path.isfile(fout_name):
-        print("Fasta file %s already existing, using it for next steps ..." % fout_name)
+        print("Fasta file %s already existing, using it for next steps ..."
+              % fout_name)
         return False
 
     # Get data from NCBI
@@ -46,25 +51,25 @@ def getFastaFromGIs(gis_list, fout_name, email):
     handle.close()
     print("Written %s sequences to %s" % (count, fout_name))
 
-#-------------------------------------------------------------------------------
+
 def format_db(fasta, dbtype='prot', path_blast=''):
     """
     Format a fasta file for having them as db for blast+
     dbtype can be 'nucl' or 'prot'
     """
-    if all( [ os.path.isfile(x)
-              for x in [fasta + ".phr", fasta + ".pin", fasta + ".psq"] ] ):
+    if all([os.path.isfile(x)
+            for x in [fasta + ".phr", fasta + ".pin", fasta + ".psq"]]):
         print("Already formated database for %s" % fasta)
         return False
 
     print("Formatting db for %s" % fasta)
-    cmd = [path_blast + 'makeblastdb', '-dbtype', dbtype, '-in', fasta ]
-    proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
+    cmd = [path_blast + 'makeblastdb', '-dbtype', dbtype, '-in', fasta]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()
 
     return out, err
 
-#-------------------------------------------------------------------------------
+
 def do_blastP(query, db, outfile, cpus, fmt=6, path_blast=''):
     """
     Launched a blastp analysis for the [query] against the [db]
@@ -76,8 +81,8 @@ def do_blastP(query, db, outfile, cpus, fmt=6, path_blast=''):
 
     print("Starting BlastP")
     cmd = [path_blast + 'blastp', '-query', query, '-db', db, '-out', outfile,
-           '-outfmt', str(fmt), '-evalue', '1e-6', '-num_threads', str(cpus) ]
+           '-outfmt', str(fmt), '-evalue', '1e-6', '-num_threads', str(cpus)]
 
     print(" ".join(cmd))
-    proc = subprocess.Popen( cmd, stdout=subprocess.PIPE)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     out, err = proc.communicate()

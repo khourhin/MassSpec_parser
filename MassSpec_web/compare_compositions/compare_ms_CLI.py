@@ -3,7 +3,6 @@ import os
 import argparse
 import imp
 import shutil
-from django.conf import settings
 
 if __name__ == '__main__':
     # using the CLI
@@ -14,14 +13,17 @@ else:
     # Using django web
     from .libs import get_from_gi as gg
     from .libs import tair_ms_parse as ms
+    from django.conf import settings
     WDIR = settings.MEDIA_ROOT
 
 
 def checkForOutFolder(outfolder):
     if os.path.isdir(outfolder):
-        print("The results will be in the already existent folder: %s" % outfolder)
+        print("The results will be in the already existent folder: %s"
+              % outfolder)
     else:
-        print("Creating the folder %s\n The results will be there." % outfolder)
+        print("Creating the folder %s\nThe results will be there."
+              % outfolder)
         os.makedirs(outfolder)
 
 
@@ -38,7 +40,7 @@ def checkDependencies():
     # Check if blast is installed
     if not shutil.which('makeblastdb'):
         raise OSError("Are you sure blast+ is installed ?")
-    #distutils.spawn.find_executable("blastp")
+    # distutils.spawn.find_executable("blastp")
 
 
 def run_compare_cli(data, background, col_num, db,
@@ -71,7 +73,8 @@ def run_compare_cli(data, background, col_num, db,
         blast_outs.append(blastout_name)
 
     TAIRmap = ms.getMap(blast_outs)
-    ms.print_original_Data(data, TAIRmap, col_num, outfolder, background=background)
+    ms.print_original_Data(data, TAIRmap, col_num, outfolder,
+                           background=background)
 
 
 if __name__ == '__main__':
@@ -79,7 +82,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(prog="python ms_summary.py")
     parser.add_argument("-i", "--input", action='append',
-                        help="CSV files of MS results. At least 2 should be given.",
+                        help="""CSV files of MS results.
+                                At least 1 should be given.""",
                         required=True)
 
     parser.add_argument("-d", "--dbBlast", action='append',
@@ -112,9 +116,6 @@ if __name__ == '__main__':
 
     checkDependencies()
 
-    if len(args.input) < 2:
-        raise IOError("At least 2 csvs files are required to compute a common set of TAIRS")
-
     run_compare_cli(args.input, args.background, 2,
-                args.dbBlast, args.outfolder,
-                args.email, args.cpus, args.pathBlast)
+                    args.dbBlast, args.outfolder,
+                    args.email, args.cpus, args.pathBlast)
