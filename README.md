@@ -1,5 +1,27 @@
 # MassSpec_parser
-A python library to parse Mass Spectrometry results and annotate with TAIR accessions
+A python library to parse Mass Spectrometry results and annotate
+with TAIR accessions
+
+## Overview
+### Input
+- "MS infiles": At least one csv file with Mass Spectrometry results (with the GI accession number in the 3rd column). **MANDATORY**
+- "Blast db": One fasta file to blast against for "blast db". **MANDATORY**
+- "MS background": Csv files of background signal. OPTIONAL
+
+### Workflow
+1.  The program will extract the GI accession numbers (currently,
+    the GIs **HAVE TO BE** the 3rd column of your csv files)
+
+2. Sequences corresponding to the GIs will be extracted from Entrez and blasted
+  against the reference given as "blast db".
+
+3. The best hits (highest scores) will be then reported together with the
+original Mass Spectrometry data in the `_out.csv` file. Blast results can be
+found in the `.tab` file.
+
+4. If you specify more than one file as "ms infiles", then the `_out.csv` file
+will display columns showing the presence (1) or absence (0) of a particular
+protein in the datasets given as infiles.
 
 ## Usage with Docker
 - Install Docker
@@ -11,11 +33,11 @@ In Docker:
 `docker run -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d khourhin/bioinfo`
 
 ### On Windows
-To get the IP to check with your browser:
+To get the IP of your localhost by typing in the command line:
 
 `docker-machine ip`
 
-Open your internet browser with URL:
+Open your internet browser, and type as URL:
 
 PREVIOUS_STEP_IP:8000
 
@@ -36,15 +58,15 @@ For the web platform version:
 - django 1.9.4
 - django-forms-bootstrap
 
-## Web interface Usage
+### Web interface Usage
 `python3 manage.py runserver`
 
 Then go to your web browser and go the URL:
 
 http://localhost:8000/
 
-## Command line Usage
-python ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
+### Command line Usage
+python3 ms_summary.py [-h] -i INPUTS -d DBBLAST [-b BACKGROUND] [-c CPUS] [-o OUTFOLDER] [-p PATHBLAST]
 
 Arguments:
 
