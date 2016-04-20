@@ -49,6 +49,8 @@ def compare_ms(request):
                 blast_db = [f.doc.name for f in data['blast_db']]
                 print(data)
 
+                messages.info(request, "Computing ... Please wait ...")
+
                 try:
                     run_compare_cli(ms_in, ms_bck, 2, blast_db, 'MS_parse_out',
                                     data['email'], 1, '')
