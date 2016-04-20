@@ -20,7 +20,7 @@ def getGIs(gis_csv, col_num):
             else:
                 raise IOError("""The column number {0} in the file {1}
                               doesn't start with 'gi|'. Is this column a GI
-                              accession column ?""".format(col_num, gis_csv))
+                              accession column ?""".format(col_num + 1, gis_csv))
     print("Found %s GIs in csv %s" % (len(gis), gis_csv))
     return gis
 
