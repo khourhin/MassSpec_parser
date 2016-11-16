@@ -28,7 +28,7 @@ protein in the datasets given as infiles.
 
 https://docs.docker.com/
 
-In Docker:
+- In Docker:
 
 `docker run -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d khourhin/bioinfo`
 
