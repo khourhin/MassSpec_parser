@@ -32,6 +32,8 @@ https://docs.docker.com/
 
 `docker run -p 8000:8000 -v OUTFOLDER_ON_YOUR_COMPUTER:/usr/src/user_data -d khourhin/bioinfo`
 
+For windows, a path like "C:\Users\folder" should be specified as "/c/Users/folder"
+
 ### On Windows
 To get the IP of your localhost by typing in the command line:
 
